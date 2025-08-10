@@ -1,38 +1,20 @@
-const rpc = require("discord-rpc");
+const RPC = require('discord-rpc');
+const clientId = '1404188050036359342';
+const rpc = new RPC.Client({ transport: 'ipc' });
 
-const clientId = 'Client-Id';
+RPC.register(clientId);
 
-const client = new rpc.Client({
-    transport: 'ipc'
-})
+rpc.on('ready', () => {
+  rpc.setActivity({
+    details: 'Jogando', // ← atualizado aqui
+    state: 'Forza Horizon 5',
+    startTimestamp: new Date(),
+    largeImageKey: 'forza_horizon_5',
+    largeImageText: 'Forza Horizon 5',
+    instance: false,
+  });
 
-client.on('ready', () => {
-
-    console.log("[RPC] Hooked!");
-    client.request('SET_ACTIVITY', {
-        pid: process.pid,
-        activity: {
-            details: "'Details'",
-            assets: {
-                large_image: "'Image name'",
-                large_text: "'Image text'"
-            },
-//Add Buttons            
-            buttons: [
-                {
-                    label: "'Name'",
-                    url: "'URL'"
-                },
-                {
-                    label: "'Name'",
-                    url: "'URL'"
-                }
-            ]
-        }
-//terminal output
-    }).then(() => console.log("[RPC] Activity set!")).catch(console.error);
-
+  console.log('🟢 Rich Presence ativo no Discord!');
 });
 
-
-client.login({ clientId }).catch(console.error);
+rpc.login({ clientId }).catch(console.error);
